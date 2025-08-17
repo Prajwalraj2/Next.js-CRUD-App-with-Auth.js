@@ -97,9 +97,9 @@ npm run lint    # run linter
 
 ### Roadmap
 
-v1.0.0 → Product create, update, delete, read | Auth with Google & Github | Protect page with Middleware & Page-Level checks
-v1.1.0 → Product search & sort
-v1.2.0 → API endpoints (/api/products)
-v1.3.0 → Image upload for products
-v2.0.0 → Roles/permissions (admin/editor)
+- v1.0.0 → Product create, update, delete, read | Auth with Google & Github | Protect page with Middleware & Page-Level checks
+- v1.1.0 → Product search & sort
+- v1.2.0 → API endpoints (/api/products)
+- v1.3.0 → Image upload for products
+- v2.0.0 → Roles/permissions (admin/editor)
 
