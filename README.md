@@ -1,36 +1,105 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Next.js CRUD App (Products) + Auth.js
 
-## Getting Started
+A minimal product CRUD starter using **Next.js (App Router)**, **Prisma + PostgreSQL**, and **Auth.js (Google & GitHub)**.  
+Creating/editing products requires login. Auth is enforced via **middleware** and **page-level server checks**.
 
-First, run the development server:
+---
 
+## Features
+- Products CRUD (Next.js App Router + Prisma ORM)
+- Auth.js (NextAuth v5) with **Google** & **GitHub** providers
+- **Protected routes** with middleware + page-level session checks
+- TailwindCSS styling
+- Zod validation for server actions
+
+---
+
+## Tech Stack
+- Next.js 15 (App Router)
+- Auth.js (NextAuth v5) + Prisma Adapter
+- PostgreSQL + Prisma ORM
+- TailwindCSS
+- Zod
+
+---
+
+## Getting Started (Local)
+
+### 0) Prerequisites
+- **Node.js** 18+ (recommend 20+)
+- **PostgreSQL** running locally
+- A **Google OAuth** app and a **GitHub OAuth** app  
+  Callback URLs must be set to:
+  - `http://localhost:3000/api/auth/callback/google`
+  - `http://localhost:3000/api/auth/callback/github`
+
+---
+
+### 1) Clone
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/Prajwalraj2/Next.js-CRUD-App-with-Auth.js.git
+cd Next.js-CRUD-App-with-Auth.js
+
+```
+### 2) Install dependencies
+```
+npm install
+```
+### 3) Environment variables
+Create .env from the example and fill in your values:
+
+```
+cp .env.example .env
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Required keys:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```
+DATABASE_URL=postgresql://postgres:password@localhost:5432/next_crud?schema=public
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+NEXTAUTH_URL=http://localhost:3000
+NEXTAUTH_SECRET=replace_me_with_a_strong_secret
 
-## Learn More
+GOOGLE_CLIENT_ID=your_google_client_id
+GOOGLE_CLIENT_SECRET=your_google_client_secret
+GITHUB_CLIENT_ID=your_github_client_id
+GITHUB_CLIENT_SECRET=your_github_client_secret
+```
+### 4) Database setup
+```
+npx prisma migrate dev
+npx prisma generate
+```
 
-To learn more about Next.js, take a look at the following resources:
+### 5) Run the app
+```
+npm run dev
+# open http://localhost:3000
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### 6) Sign in & use
+- Click Login → Sign in with Google or GitHub
+- Go to Products → New Product (requires login)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Access Control (Double Checks)
 
-## Deploy on Vercel
+- Middleware (src/middleware.ts) redirects unauthenticated users away from protected routes.
+- Page-level checks validate session again before rendering sensitive pages. This ensures security even if middleware is bypassed.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Scripts
+```
+npm run dev     # start dev server
+npm run build   # build production bundle
+npm run start   # run production server (after build)
+npm run lint    # run linter
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+### Roadmap
+
+v1.0.0 → Product create, update, delete, read | Auth with Google & Github | Protect page with Middleware & Page-Level checks
+v1.1.0 → Product search & sort
+v1.2.0 → API endpoints (/api/products)
+v1.3.0 → Image upload for products
+v2.0.0 → Roles/permissions (admin/editor)
+
