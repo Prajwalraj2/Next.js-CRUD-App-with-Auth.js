@@ -9,6 +9,7 @@ export default auth((req: any) => {
     '/',           // Home page
     '/products',   // Product listing page (view only)
     '/login',      // Login page
+    '/register',   // Register page
   ];
   
   // Always allow NextAuth API routes
