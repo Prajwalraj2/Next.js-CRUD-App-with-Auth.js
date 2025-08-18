@@ -31,6 +31,13 @@ export default async function Header() {
                 >
                   User
                 </Link>
+
+                <Link 
+                  href="/myproducts" 
+                  className="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-100 transition-colors"
+                >
+                  My Products
+                </Link>
                 
                 <Link 
                   href="/products" 
@@ -84,6 +91,13 @@ export default async function Header() {
                   className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
                 >
                   Login
+                </Link>
+
+                <Link 
+                  href="/register" 
+                  className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
+                >
+                  Register
                 </Link>
               </>
             )}

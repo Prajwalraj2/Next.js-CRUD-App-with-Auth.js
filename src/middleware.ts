@@ -9,6 +9,7 @@ export default auth((req: any) => {
     '/',           // Home page
     '/products',   // Product listing page (view only)
     '/login',      // Login page
+    '/register',   // Register page
   ];
   
   // Always allow NextAuth API routes
@@ -28,7 +29,8 @@ export default auth((req: any) => {
   const isProtectedRoute = 
     pathname.startsWith('/products/new') ||
     pathname.match(/^\/products\/\d+\/edit$/) ||  // Match /products/{id}/edit
-    pathname.startsWith('/user');
+    pathname.startsWith('/user') ||
+    pathname.startsWith('/myproducts');
   
   // For protected routes, require authentication
   if (isProtectedRoute && !req.auth) {

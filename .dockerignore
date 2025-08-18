@@ -1,0 +1,12 @@
+
+.env
+*.env
+node_modules
+.next
+.git
+Dockerfile
+.dockerignore
+npm-debug.log
+yarn-error.log
+pnpm-lock.yaml
+README.md
