@@ -2,9 +2,10 @@
 import Link from "next/link";
 import { listMyProducts, deleteProduct } from "@/app/(dashboard)/products/actions";
 
-export default async function MyProductsPage({ searchParams }: { searchParams?: { q?: string; page?: string } }) {
-  const q = (await searchParams)?.q ?? "";
-  const page = Number((await searchParams)?.page ?? 1);
+export default async function MyProductsPage({ searchParams }: { searchParams?: Promise<{ q?: string; page?: string }> }) {
+  const resolvedSearchParams = await searchParams;
+  const q = resolvedSearchParams?.q ?? "";
+  const page = Number(resolvedSearchParams?.page ?? 1);
 
   const { items, total, pageSize } = await listMyProducts({ q, page });
 

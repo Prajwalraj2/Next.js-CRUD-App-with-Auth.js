@@ -50,7 +50,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         if (!ok) return null;
 
         // Return minimal user object; adapter fills the rest
-        return { id: user.id, email: user.email, name: user.name ?? undefined };
+        return { id: user.id, email: user.email, name: user.name ?? undefined, role: user.role };
       },
     }),
   ],
@@ -58,18 +58,26 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   // Keep tokens minimal: only stash your own user.id
   callbacks: {
     async jwt({ token, user }) {
-      if (user) {
+      if (user) {         //// first sign-in
         // On first sign-in, attach the DB user id to the JWT
         token.id = (user as any).id;
-      }
+        token.role = (user as any).role ?? "USER";
+      
       // Do NOT keep provider access tokens since we won't call their APIs
       // (i.e., no token.accessToken, no refresh_token)
+
+      } else if (token?.id && !token.role) {
+        // refresh path: ensure role on token
+        const db = await prisma.user.findUnique({ where: { id: token.id as string }, select: { role: true } });
+        token.role = db?.role ?? "USER";
+      }
       return token;
     },
     async session({ session, token }) {
       // Expose user id to the client session for convenience
       if (session.user && token?.id) {
         (session.user as any).id = token.id as string;
+        (session.user as any).role = token.role as any;
       }
       return session;
     },

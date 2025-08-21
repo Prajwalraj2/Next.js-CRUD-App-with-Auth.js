@@ -1,16 +1,17 @@
-// src/types/next-auth.d.ts
-import "next-auth";
+import NextAuth from "next-auth";
 
 declare module "next-auth" {
+  interface User { id: string; role?: "USER" | "ADMIN" }
   interface Session {
-    user: {
+    user?: {
       id: string;
       name?: string | null;
       email?: string | null;
       image?: string | null;
+      role?: "USER" | "ADMIN";
     };
   }
-  interface JWT {
-    id?: string;
-  }
+}
+declare module "next-auth/jwt" {
+  interface JWT { id?: string; role?: "USER" | "ADMIN" }
 }

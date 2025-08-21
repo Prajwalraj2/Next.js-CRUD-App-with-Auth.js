@@ -10,6 +10,7 @@ async function handleSignOut() {
 
 export default async function Header() {
   const user = await getCurrentUser();
+  const isAdmin = user?.role === "ADMIN";
 
   return (
     <header className="bg-white shadow-sm border-b border-gray-200">
@@ -25,6 +26,14 @@ export default async function Header() {
             {user ? (
               // Authenticated Navigation
               <>
+                {isAdmin && (
+                  <Link 
+                    href="/admin" 
+                    className="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-100 transition-colors"
+                  >
+                    Admin
+                  </Link>
+                )}
                 <Link 
                   href="/user" 
                   className="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-100 transition-colors"

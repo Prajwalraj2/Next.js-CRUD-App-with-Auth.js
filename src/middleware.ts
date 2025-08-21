@@ -24,6 +24,19 @@ export default auth((req: any) => {
   if (isPublicRoute) {
     return;
   }
+
+  // Check if the user is an admin
+  // if (req.auth?.user?.role !== "ADMIN") {
+  //   const newUrl = new URL("/", req.nextUrl.origin)
+  //   return Response.redirect(newUrl)
+  // }
+
+    // Admin-only
+    if (pathname.startsWith("/admin")) {
+      const role = req.auth?.token?.role || req.auth?.user?.role;
+      if (role !== "ADMIN") return new Response("Forbidden", { status: 403 });
+      return;
+    }
   
   // Check if it's a protected route pattern
   const isProtectedRoute = 
