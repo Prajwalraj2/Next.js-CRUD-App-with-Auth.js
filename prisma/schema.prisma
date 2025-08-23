@@ -84,3 +84,114 @@ model VerificationToken {
   @@id([identifier, token])
 }
 
+// ----- V5: Resource module & item types -----
+// ---------- v5: Content hierarchy ----------
+
+enum ResourceModuleKind {
+  MIXED
+  TABLE
+  CONTENT
+}
+
+enum ResourceBlockType {
+  TEXT
+  CARD
+  COLLAPSIBLE
+  VIDEO
+  IMAGE
+  LINKLIST
+}
+
+enum TableColumnType {
+  TEXT
+  BADGE
+  LINK
+  DESC
+}
+
+model Domain {
+  id           String         @id @default(cuid())
+  name         String
+  slug         String         @unique
+  order        Int            @default(0)
+  isPublic     Boolean        @default(true)
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+
+  subCategories SubCategory[]
+}
+
+model SubCategory {
+  id         String     @id @default(cuid())
+  domainId   String
+  domain     Domain     @relation(fields: [domainId], references: [id], onDelete: Cascade)
+  name       String
+  slug       String
+  order      Int        @default(0)
+  isPublic   Boolean    @default(true)
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+
+  modules    ResourceModule[]
+
+  @@unique([domainId, slug])
+  @@index([domainId, order])
+}
+
+model ResourceModule {
+  id            String              @id @default(cuid())
+  subCategoryId String
+  subCategory   SubCategory         @relation(fields: [subCategoryId], references: [id], onDelete: Cascade)
+  title         String
+  slug          String
+  summary       String?
+  kind          ResourceModuleKind  @default(MIXED)
+  order         Int                 @default(0)
+  isPublic      Boolean             @default(true)
+  createdAt     DateTime            @default(now())
+  updatedAt     DateTime            @updatedAt
+
+  blocks        ResourceBlock[]
+  table         ResourceTable?
+
+  @@unique([subCategoryId, slug])
+  @@index([subCategoryId, order])
+}
+
+model ResourceBlock {
+  id        String            @id @default(cuid())
+  moduleId  String
+  module    ResourceModule    @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+  type      ResourceBlockType
+  order     Int               @default(0)
+  data      Json
+  createdAt DateTime          @default(now())
+  updatedAt DateTime          @updatedAt
+
+  @@index([moduleId, order])
+}
+
+model ResourceTable {
+  id        String         @id @default(cuid())
+  moduleId  String         @unique
+  module    ResourceModule @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+  columns   Json           // [{key,label,type,visible?,width?}]
+  createdAt DateTime       @default(now())
+  updatedAt DateTime       @updatedAt
+
+  rows      ResourceTableRow[]
+}
+
+model ResourceTableRow {
+  id        String         @id @default(cuid())
+  tableId   String
+  table     ResourceTable  @relation(fields: [tableId], references: [id], onDelete: Cascade)
+  order     Int            @default(0)
+  data      Json           // { [key]: string | {label,href} | ... }
+  createdAt DateTime       @default(now())
+  updatedAt DateTime       @updatedAt
+
+  @@index([tableId, order])
+}
+
+

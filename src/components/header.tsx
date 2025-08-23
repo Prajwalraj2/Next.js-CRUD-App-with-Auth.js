@@ -53,8 +53,7 @@ export default async function Header() {
                   className="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-100 transition-colors"
                 >
                   Products
-                </Link>
-                
+                </Link>                
                 <Link 
                   href="/products/new" 
                   className="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-100 transition-colors"
@@ -93,6 +92,12 @@ export default async function Header() {
                   className="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-100 transition-colors"
                 >
                   Products
+                </Link>
+                <Link 
+                  href="/domains" 
+                  className="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-100 transition-colors"
+                >
+                  Domains
                 </Link>
                 
                 <Link 

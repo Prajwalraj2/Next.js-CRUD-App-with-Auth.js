@@ -10,10 +10,15 @@ export default auth((req: any) => {
     '/products',   // Product listing page (view only)
     '/login',      // Login page
     '/register',   // Register page
+    '/domains'
   ];
   
   // Always allow NextAuth API routes
   if (pathname.startsWith('/api/auth')) {
+    return;
+  }
+  // PUBLIC: whole domains tree
+  if (pathname === "/" || pathname === "/products" || pathname === "/login" || pathname === "/register" || pathname.startsWith("/domains")) {
     return;
   }
   
