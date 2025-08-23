@@ -14,7 +14,7 @@ import { compare } from "bcryptjs";
 
 // Export the helpers that NextAuth v5 gives you
 export const { handlers, auth, signIn, signOut } = NextAuth({
-  adapter: PrismaAdapter(prisma),
+  // adapter: PrismaAdapter(prisma),
 
   // JWT sessions work well with middleware and edge
   session: { strategy: "jwt" },
@@ -72,8 +72,9 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 
       } else if (token?.id && !token.role) {
         // refresh path: ensure role on token
-        const db = await prisma.user.findUnique({ where: { id: token.id as string }, select: { role: true } });
-        token.role = db?.role ?? "USER";
+        // const db = await prisma.user.findUnique({ where: { id: token.id as string }, select: { role: true } });
+        // token.role = db?.role ?? "USER";
+        token.role = "USER";
       }
       return token;
     },
